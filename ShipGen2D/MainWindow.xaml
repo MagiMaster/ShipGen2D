@@ -3,8 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="480" Width="640">
     <DockPanel>
-        <Grid Height="64" DockPanel.Dock="Bottom">
+        <Grid Height="72" DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -12,10 +16,16 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
-            <Button Content="Reroll" Height="23" HorizontalAlignment="Center" Name="rerollButton" VerticalAlignment="Center" Width="75" Click="rerollButton_Click" />
-            <Button Content="Save" Grid.Column="1" Height="23" HorizontalAlignment="Center" Name="saveButton" VerticalAlignment="Center" Width="75" Click="saveButton_Click" />
-            <Button Content="Quit" Grid.Column="3" Height="23" HorizontalAlignment="Center" Name="quitButton" VerticalAlignment="Center" Width="75" Click="quitButton_Click" />
+            <Button Content="Reroll" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Height="23" HorizontalAlignment="Center" Name="rerollButton" VerticalAlignment="Center" Width="75" Click="rerollButton_Click" />
+            <Button Content="Save" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" Height="23" HorizontalAlignment="Center" Name="saveButton" VerticalAlignment="Center" Width="75" Click="saveButton_Click" />
+            <Button Content="Quit" Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="1" Height="23" HorizontalAlignment="Center" Name="quitButton" VerticalAlignment="Center" Width="75" Click="quitButton_Click" />
+            <Label Content="Width" Height="28" HorizontalAlignment="Right" Margin="4,4,4,4" Name="label1" VerticalAlignment="Center" />
+            <Label Content="Height" Grid.Column="2" Height="28" HorizontalAlignment="Right" Margin="4,4,4,4" Name="label2" VerticalAlignment="Center" />
+            <TextBox Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="4,4,4,4" Name="widthBox" VerticalAlignment="Center" Width="64" />
+            <TextBox Grid.Column="3" Height="23" HorizontalAlignment="Left" Margin="4,4,4,4" Name="heightBox" VerticalAlignment="Center" Width="64" />
+            <CheckBox Content="Symmetric" Grid.Column="4" Grid.ColumnSpan="2" Height="16" HorizontalAlignment="Center" Margin="0,0,0,0" Name="symBox" VerticalAlignment="Center" IsChecked="True" />
         </Grid>
         <Canvas Name="canvas" Background="Black" />
     </DockPanel>

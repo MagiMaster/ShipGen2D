@@ -23,6 +23,7 @@ namespace ShipGen2D {
     public partial class MainWindow : Window {
         public Polygons rooms, decoration;
         public Clipper c;
+        public Random rnd;
 
         public static System.Windows.Shapes.Polygon ToSystemPolygon(Polygon p) {
             return ToSystemPolygon(p, Brushes.White, Brushes.Transparent);
@@ -43,24 +44,13 @@ namespace ShipGen2D {
             return o;
         }
 
-        public void AddRectRoom(int x1, int y1, int x2, int y2) {
+        public void AddRectRoom(int x, int y, int w, int h) {
             Polygon p = new Polygon();
 
-            if (x2 < x1) {
-                int temp = x1;
-                x1 = x2;
-                x2 = temp;
-            }
-            if (y2 < y1) {
-                int temp = y1;
-                y1 = y2;
-                y2 = temp;
-            }
-
-            p.Add(new IntPoint(x1, y1));
-            p.Add(new IntPoint(x2, y1));
-            p.Add(new IntPoint(x2, y2));
-            p.Add(new IntPoint(x1, y2));
+            p.Add(new IntPoint(x, y));
+            p.Add(new IntPoint(x + w, y));
+            p.Add(new IntPoint(x + w, y + h));
+            p.Add(new IntPoint(x, y + h));
 
             rooms.Add(p);
         }
@@ -72,29 +62,64 @@ namespace ShipGen2D {
             return o;
         }
 
+        public void generateRooms(int width, int height, bool sym = true) {
+            rooms.Clear();
+            decoration.Clear();
+
+            int[,] grid = new int[width, height];
+
+            for (int y = 0; y < height; ++y)
+                for (int x = 0; x < width; ++x)
+                    grid[x, y] = 0;
+
+            int scale = (int)Math.Min(canvas.RenderSize.Width / (width + 6), canvas.RenderSize.Height / (height + 6));
+            double mid = canvas.RenderSize.Height / 2;
+            int offsetX = (int)((canvas.RenderSize.Width - scale * width) / 2);
+            int offsetY = (int)((canvas.RenderSize.Height - scale * height) / 2);
+
+            int hh = height;
+            if (sym)
+                hh = (height + 1) / 2;
+
+            for(int y = 0; y < hh; ++y)
+                for (int x = 0; x < width; ++x) {
+                    double u = 1.0 - Math.Abs(2.0 * y - height) / height;
+                    double v = width*(0.2 + 0.3 * u);
+                    double w = (x < v ? x / v : (width - x) / (width - v));
+                    double p = (0.05 + 0.95 * w) * (0.25 + 0.75 * u);
+
+                    if (rnd.NextDouble() < p) {
+                        grid[x, y] = -1;
+                        if (sym) grid[x, height - y - 1] = -1;
+                    }
+                }
+
+            //Temporary
+            for (int y = 0; y < height; ++y)
+                for (int x = 0; x < width; ++x)
+                    if (grid[x, y] != 0)
+                        AddRectRoom(offsetX + scale * x, offsetY + scale * y, scale, scale);
+        }
+
+        public void generateDecorations() {
+        }
+
         public MainWindow() {
             InitializeComponent();
+
+            rnd = new Random();
 
             c = new Clipper();
 
             rooms = new Polygons();
-            AddRectRoom(50, 50, 150, 100);
-            AddRectRoom(100, 100, 200, 150);
-            AddRectRoom(50, 150, 150, 200);
-
             decoration = new Polygons();
-            Polygon p = new Polygon();
-            p.Add(new IntPoint(30, 40));
-            p.Add(new IntPoint(175, 80));
-            p.Add(new IntPoint(50, 110));
-            decoration.Add(p);
-            decoration.Add(MirrorY(p, 125));
-
-            redraw();
         }
 
         public void redraw() {
             canvas.Children.Clear();
+
+            if (rooms.Count == 0 && decoration.Count == 0)
+                return;
 
             c.Clear();
             Polygons outline = new Polygons();
@@ -106,6 +131,10 @@ namespace ShipGen2D {
 
             // Bevel inside corners of the outline
             foreach (Polygon p in outline) {
+                // Skip holes
+                if (!Clipper.Orientation(p))
+                    continue;
+
                 // Find the inside corners
                 List<bool> corners = new List<bool>();
                 for (int j = 0; j < p.Count; ++j) {
@@ -142,7 +171,7 @@ namespace ShipGen2D {
                 canvas.Children.Add(ToSystemPolygon(p));
 
             foreach (Polygon p in outline) {
-                canvas.Children.Add(ToSystemPolygon(p, Brushes.Red));
+                canvas.Children.Add(ToSystemPolygon(p, Brushes.Yellow));
             }
 
             UpdateLayout();
@@ -164,6 +193,8 @@ namespace ShipGen2D {
         }
 
         private void rerollButton_Click(object sender, RoutedEventArgs e) {
+            generateRooms(12, 7, symBox.IsChecked.Value);
+            generateDecorations();
             redraw();
         }
     }
