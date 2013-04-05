@@ -1,0 +1,22 @@
+﻿<Window x:Class="ShipGen2D.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="480" Width="640">
+    <DockPanel>
+        <Grid Height="64" DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Button Content="Reroll" Height="23" HorizontalAlignment="Center" Name="rerollButton" VerticalAlignment="Center" Width="75" Click="rerollButton_Click" />
+            <Button Content="Save" Grid.Column="1" Height="23" HorizontalAlignment="Center" Name="saveButton" VerticalAlignment="Center" Width="75" Click="saveButton_Click" />
+            <Button Content="Quit" Grid.Column="3" Height="23" HorizontalAlignment="Center" Name="quitButton" VerticalAlignment="Center" Width="75" Click="quitButton_Click" />
+        </Grid>
+        <Canvas Name="canvas" Background="Black" />
+    </DockPanel>
+</Window>
