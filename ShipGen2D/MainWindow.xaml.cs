@@ -94,6 +94,46 @@ namespace ShipGen2D {
                     }
                 }
 
+            for(int i = 0; i < 2; ++i)
+            {
+                int[,] temp = new int[width, height];
+
+                for(int y = 0; y < height; ++y)
+                    for (int x = 0; x < width; ++x) {
+                        int count = 0;
+
+                        for (int v = -1; v <= 1; ++v)
+                            for (int u = -1; u <= 1; ++u) {
+                                if (u == 0 && v == 0)
+                                    continue;
+
+                                int dx = x + u;
+                                int dy = y + v;
+
+                                if (dx < 0 || dx >= width || dy < 0 || dy >= height)
+                                    continue;
+
+                                count += (grid[dx, dy] == -1 ? 1 : 0);
+                            }
+
+                        temp[x, y] = count;
+                    }
+
+                for(int y = 0; y < height; ++y)
+                    for (int x = 0; x < width; ++x) {
+                        if (temp[x, y] == 2 || temp[x, y] == 5 || temp[x, y] == 7)
+                            grid[x, y] = -1;
+                        else if (temp[x, y] == 3 && grid[x, y] == 0)
+                            grid[x, y] = -1;
+                        else if ((temp[x, y] == 1 || temp[x, y] == 6 || temp[x, y] == 8) && grid[x, y] == -1)
+                            grid[x, y] = -1;
+                        else if (grid[x, y] == -1)
+                            grid[x, y] = -2;
+                        else
+                            grid[x, y] = 0;
+                    }
+            }
+
             //Temporary
             for (int y = 0; y < height; ++y)
                 for (int x = 0; x < width; ++x)
@@ -193,7 +233,7 @@ namespace ShipGen2D {
         }
 
         private void rerollButton_Click(object sender, RoutedEventArgs e) {
-            generateRooms(12, 7, symBox.IsChecked.Value);
+            generateRooms(int.Parse(widthBox.Text), int.Parse(heightBox.Text), symBox.IsChecked.Value);
             generateDecorations();
             redraw();
         }

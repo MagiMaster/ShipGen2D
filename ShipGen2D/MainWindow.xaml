@@ -23,8 +23,8 @@
             <Button Content="Quit" Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="1" Height="23" HorizontalAlignment="Center" Name="quitButton" VerticalAlignment="Center" Width="75" Click="quitButton_Click" />
             <Label Content="Width" Height="28" HorizontalAlignment="Right" Margin="4,4,4,4" Name="label1" VerticalAlignment="Center" />
             <Label Content="Height" Grid.Column="2" Height="28" HorizontalAlignment="Right" Margin="4,4,4,4" Name="label2" VerticalAlignment="Center" />
-            <TextBox Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="4,4,4,4" Name="widthBox" VerticalAlignment="Center" Width="64" />
-            <TextBox Grid.Column="3" Height="23" HorizontalAlignment="Left" Margin="4,4,4,4" Name="heightBox" VerticalAlignment="Center" Width="64" />
+            <TextBox Grid.Column="1" Height="23" HorizontalAlignment="Left" Margin="4,4,4,4" Name="widthBox" VerticalAlignment="Center" Width="64" Text="12" />
+            <TextBox Grid.Column="3" Height="23" HorizontalAlignment="Left" Margin="4,4,4,4" Name="heightBox" VerticalAlignment="Center" Width="64" Text="7" />
             <CheckBox Content="Symmetric" Grid.Column="4" Grid.ColumnSpan="2" Height="16" HorizontalAlignment="Center" Margin="0,0,0,0" Name="symBox" VerticalAlignment="Center" IsChecked="True" />
         </Grid>
         <Canvas Name="canvas" Background="Black" />
