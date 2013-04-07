@@ -233,9 +233,15 @@ namespace ShipGen2D {
         }
 
         private void rerollButton_Click(object sender, RoutedEventArgs e) {
-            generateRooms(int.Parse(widthBox.Text), int.Parse(heightBox.Text), symBox.IsChecked.Value);
-            generateDecorations();
-            redraw();
+            int w, h;
+
+            if (!int.TryParse(widthBox.Text, out w) || !int.TryParse(heightBox.Text, out h))
+                MessageBox.Show("Please enter a valid width and height", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            else {
+                generateRooms(int.Parse(widthBox.Text), int.Parse(heightBox.Text), symBox.IsChecked.Value);
+                generateDecorations();
+                redraw();
+            }
         }
     }
 }
